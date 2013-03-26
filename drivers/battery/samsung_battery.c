@@ -1915,8 +1915,9 @@ monitor_finish:
 		info->prev_battery_health != info->battery_health ||
 		info->prev_charge_virt_state != info->charge_virt_state ||
 		info->prev_battery_soc != info->battery_soc) {
-		pr_info("%s: update wakelock(%d)\n", __func__, 3 * HZ);
-		wake_lock_timeout(&info->update_wake_lock, 3 * HZ);
+		/* TBD : timeout value */
+		pr_info("%s: update wakelock(%d)\n", __func__, HZ);
+		wake_lock_timeout(&info->update_wake_lock, HZ);
 	}
 	info->prev_cable_type = info->cable_type;
 	info->prev_battery_health = info->battery_health;
@@ -1931,12 +1932,18 @@ skip_updating_status:
 	if ((info->lpm_state == true) &&
 		(info->cable_type == POWER_SUPPLY_TYPE_BATTERY)) {
 		pr_info("%s: lpm with battery, maybe power off\n", __func__);
+<<<<<<< HEAD
 		wake_lock_timeout(&info->monitor_wake_lock,
 					msecs_to_jiffies(10000));
 	} else {
 		wake_lock_timeout(&info->monitor_wake_lock,
 					msecs_to_jiffies(1000));
 	}
+=======
+		wake_lock_timeout(&info->monitor_wake_lock, 3 * HZ);
+	} else
+		wake_lock_timeout(&info->monitor_wake_lock, HZ / 4);
+>>>>>>> ff2f721... samsung-battery: Reduce battery-monitor wakelock timeouts
 
 	mutex_unlock(&info->mon_lock);
 
