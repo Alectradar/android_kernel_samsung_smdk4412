@@ -6,7 +6,6 @@
  *
  * Use consistent with the GNU GPL is permitted,
  * provided that this copyright notice is
- * preserved in its entirety in all copies and derived works.
  *
  * HEWLETT-PACKARD COMPANY MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,
  * AS TO THE USEFULNESS OR CORRECTNESS OF THIS CODE OR ITS
@@ -2541,6 +2540,11 @@ static int mmc_blk_probe(struct mmc_card *card)
 	printk(KERN_INFO "%s: %s %s %s %s\n",
 		md->disk->disk_name, mmc_card_id(card), mmc_card_name(card),
 		cap_str, md->read_only ? "(ro)" : "");
+
+//#ifdef CONFIG_WIMAX_CMC
+	if (mmc_blk_alloc_parts(card, md))
+		goto out;
+//#endif
 
 	mmc_set_drvdata(card, md);
 	mmc_fixup_device(card, blk_fixups);
