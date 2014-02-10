@@ -1,9 +1,9 @@
 /*
- * Author: andip71, 26.08.2013
+ * Author: andip71, 10.02.2014
  * 
  * Modifications: Yank555.lu 20.08.2013
  *
- * Version 1.6.4
+ * Version 1.6.6
  *
  * credits: Supercurio for ideas and partially code from his Voodoo
  * 	    	sound implementation,
