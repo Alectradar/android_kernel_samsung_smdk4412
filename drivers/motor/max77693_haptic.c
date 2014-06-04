@@ -282,21 +282,27 @@ ssize_t pwm_val_store(struct device *dev,
 	if (kstrtoul(buf, 0, &pwm_val))
 		pr_err("[VIB] %s: error on storing pwm_val\n", __func__);
 
-	pr_info("[VIB] %s: pwm_val=%lu\n", __func__, pwm_val);
+    pr_info("[VIB] %s: pwm_val=%lu\n", __func__, pwm_val);
+    pwm_duty = (pwm_val * 18525) / 100 + 18525;
 
-	pwm_duty = (pwm_val * 18525) / 100 + 18525;
-
-	/* make sure new pwm duty is in range */
-	if(pwm_duty > 37050)
-		pwm_duty = 37050;
-	else if (pwm_duty < 18525)
-		pwm_duty = 18525;
+    /* make sure new pwm duty is in range */
+    if(pwm_duty > 37050) 
+    {   
+        pwm_duty = 37050;
+    } 
+    else if (pwm_duty < 18525) 
+    {
+        pwm_duty = 18525;
+    }
 
 	pr_info("[VIB] %s: pwm_duty=%d\n", __func__, pwm_duty);
 
 	return size;
 }
-static DEVICE_ATTR(pwm_val, S_IRUGO | S_IWUSR,
+static DEVICE_ATTR(pwm_val, S_IRUGO | S_IWUGO,
+		pwm_val_show, pwm_val_store);
+
+static DEVICE_ATTR(pwm_value, S_IRUGO | S_IWUSR,
 		pwm_val_show, pwm_val_store);
 
 static int create_vibrator_sysfs(void)
@@ -395,7 +401,14 @@ static int max77693_haptic_probe(struct platform_device *pdev)
 		goto err_timed_output_register;
 	}
 #endif
-	printk(KERN_DEBUG "[VIB] timed_output device is registrated\n");
+	pr_err("[VIB] timed_output device is registrated\n");
+
+	/* User controllable pwm level */
+	error = device_create_file(hap_data->tout_dev.dev, &dev_attr_pwm_value);
+	if (error < 0) {
+		pr_err("[VIB] create sysfs fail: pwm_value\n");
+	}
+
 	pr_debug("[VIB] -- %s\n", __func__);
 
 	return error;
