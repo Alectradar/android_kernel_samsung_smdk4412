@@ -741,6 +741,7 @@ static int exynos_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		cpumask_setall(policy->cpus);
 	}
 
+        int ret = 0;
 	ret = cpufreq_frequency_table_cpuinfo(policy, exynos_info->freq_table);
 	
 	/* Keep stock frq. as default startup frq. */
