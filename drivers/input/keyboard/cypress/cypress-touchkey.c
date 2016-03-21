@@ -60,7 +60,6 @@
 // Yank555.lu : Add cleartext status settings for h/w key pressed
 #define TOUCHKEY_HW_TIMEDOUT	0
 #define TOUCHKEY_HW_PRESSED	1
->>>>>>> 71bc4b4... cypress-touchkey : add sysfs interface to enable/disable lighting hardwarekey backlight on screen touch (Yank555.lu)
 
 /* M0 Touchkey temporary setting */
 
